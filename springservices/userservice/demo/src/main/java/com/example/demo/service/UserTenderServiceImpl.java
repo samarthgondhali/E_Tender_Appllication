@@ -24,6 +24,12 @@ public class UserTenderServiceImpl implements UserTenderService{
 		return utd.save(info);
 	}
 
+	@Override
+	public void deleteTender(int id) {
+		// TODO Auto-generated method stub
+		
+	}
+
 //	@Override
 //	public UserTenderInfo updateTender(String referenceNo, UserTenderInfo users) {
 //		return utd.;

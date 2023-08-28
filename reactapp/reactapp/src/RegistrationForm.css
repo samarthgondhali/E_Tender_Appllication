@@ -21,6 +21,10 @@
     
   }
   
+  .input-cell {
+    padding: 15px 0; /* Adjust as needed */
+  }
+  
   .registration-header {
     font-size: 24px;
     margin-bottom: 20px;
@@ -28,6 +32,7 @@
   
   .registration-label {
     margin-bottom: 5px;
+    font-weight: bold;
   }
   
   .registration-input {
@@ -49,5 +54,13 @@
   
   .registration-button:hover {
     background-color: #0056b3;
+  }
+
+  .registration-submit-button {
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    border-radius: 4px;
   }
   

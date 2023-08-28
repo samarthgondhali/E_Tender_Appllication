@@ -9,18 +9,16 @@
 
 import axios from "axios";
 import React,{useState} from "react";
+import { Navigate, useNavigate } from 'react-router-dom';
 import PhoneInput from "react-phone-input-2";
 import 'react-phone-input-2/lib/style.css';
 import './PhoneNumberInput.css';
 import './RegistrationForm.css';
 
 export default function Register(){
-// let RegisterNameFirst;
-// let RegisterNameLast;
-// let RegisterEmail;
-// let DateOfBirth;
-// let Number;
 
+const navigate = useNavigate();
+var status = false;
 let RegisterUser = {
     firstname:"",
     lastname:"",
@@ -32,12 +30,7 @@ let RegisterUser = {
 };
 
 let [RegisterNewUser, setRegisterNewUser] = useState(RegisterUser);
-
-// const handleInputChange = (e) =>{
-//     const {name, value} = e.target;
-//     setRegisterNewUser({...RegisterNewUser, [name]:value});
-//     // console.log(RegisterNewUser);
-// };
+let [successMessage, setSuccessMessage] = useState('');
 
 const handleInputChange = (e, name, value) => {
     if (e && e.target) {
@@ -46,46 +39,15 @@ const handleInputChange = (e, name, value) => {
     setRegisterNewUser({ ...RegisterNewUser, [name]: value });
 };
 
-
-
-// function FirstName(e){
-//     RegisterNameFirst=e.target.value;
-// console.log(RegisterNameFirst);
-// }
-
-// function LastName(e){
-//     RegisterNameLast = e.target.value;
-//     console.log(RegisterNameLast);
-// }
-
-// function SubmitEmail(e){
-//     RegisterEmail = e.target.value;
-//     console.log(RegisterEmail);    
-// }
-
-// function SubmitDate(e){
-//     var Gdate;
-// DateOfBirth = e.target.value;
-// Gdate = DateOfBirth.getDay()+'-'+(DateOfBirth.getMonth()+1)+'-'+DateOfBirth.getYear();
-// console.log(Gdate);
-// }
-
-// function SubmitDate(e) {
-//     var Gdate;
-//     DateOfBirth = new Date(e.target.value); // Convert the input value to a Date object
-//     Gdate =  (DateOfBirth.getFullYear() )+ '-' + (DateOfBirth.getMonth() + 1) + '-' + DateOfBirth.getDate();
-//     console.log(Gdate);
-// }
-
-
-// function PhoneNumber(e){
-//     RegisterNewUser.phonenumber = e.target;
-// }
-
 const handleSubmit = (e) => {
     e.preventDefault();
+    sendVerificationEmail();
     sendRegister();
+    navigate("/VerifyOTP")
+    
+    
     console.log(RegisterNewUser);
+    setSuccessMessage('Form submitted successfully!');
 };
 
 const sendRegister = () => {
@@ -94,58 +56,94 @@ const sendRegister = () => {
     );
   }
 
+const sendVerificationEmail = () => {
+
+    let otp = ""+Math.floor(Math.random() * 1000000);
+    localStorage.setItem('otp',otp)
+    localStorage.setItem('email',RegisterNewUser.email)
+
+    var mailContent = {
+        "to":RegisterNewUser.email,
+        "intro":"Welcome to our application, here are the verification details",
+        "table":{
+            "data":[{
+                username:RegisterNewUser.firstname,
+                otp:otp
+            }]
+        },
+        "subject":"sign up verification"
+    }
+    console.log(mailContent);
+    axios.post("http://localhost:7000/mailService",mailContent).then(
+        (res)=>{console.log("Verification mail sent")}
+    )
+}
+
+
+  function RegisteredTender(){
+    var reg = {
+        "email":RegisterNewUser.email,
+        "Message":"Thank you for Registering your Account"
+    }
+
+    console.log(reg)
+ }
+
 return (
-
-
-    <div>
-    <div>
+<div>
+    <div style={{}}>
         <form className="registration-container" onSubmit={handleSubmit}>
         {/* <h2 >Registration form:</h2> */}
         <table>
             <thead>
                 <th>
-                     <tb> User Details </tb>
+                     <tb> Sign Up </tb>
                 </th>
             </thead>
             <tbody>
                 <tr>
-                    <td className='registration-label'> First Name: <input type="text" name="firstname" required maxLength={20} value={RegisterNewUser.firstname} onChange={handleInputChange}/> 
+                    <td className='registration-label'> First Name: <input type="text" name="firstname" className="form-control" required maxLength={20} value={RegisterNewUser.firstname} onChange={handleInputChange}/> 
                     </td>
                 </tr>
                 <tr>
-                    <td> Last Name: <input type="text" name="lastname" required maxLength={20} value={RegisterNewUser.lastname} onChange={handleInputChange}/>
+                    <td className='registration-label'> Last Name: <input type="text" name="lastname" className="form-control"  required maxLength={20} value={RegisterNewUser.lastname} onChange={handleInputChange}/>
                     </td>
                 </tr>
                 <tr>
-                    <td> Email: <input type="email" name="email" required value={RegisterNewUser.email} onChange={handleInputChange}></input>
+                    <td className='registration-label' > Email: <input type="email" name="email" required className="form-control" value={RegisterNewUser.email} onChange={handleInputChange}></input>
                     </td>
                 </tr>
                 <tr>
-                    <td> Date of Birth: <input type="date" name="dob"  required value={RegisterNewUser.dob} onChange={handleInputChange}></input>
+                    <td className='registration-label' > Date of Birth: <input type="date" name="dob"  className="form-control"  required value={RegisterNewUser.dob} onChange={handleInputChange}></input>
                     </td>
                 </tr>
                 <tr>
-                    <td>
+                    <td className='registration-label'>
                         Phone number: <PhoneInput country={'in'} name="phonenumber"  value={RegisterNewUser.phonenumber}  onChange={(value) => handleInputChange(null, "phonenumber",value)} />
                     </td>
                 </tr>
                 <tr>
-                    <td> Username: <input type="text" maxLength={10} name="username" value={RegisterNewUser.username} onChange={handleInputChange}></input>
+                    <td className='registration-label'> Username: <input type="text" maxLength={10} name="username" className="form-control"  value={RegisterNewUser.username} onChange={handleInputChange}></input>
                     </td>
                 </tr>
                 <tr>
-                    <td> Password: <input type="text" maxLength={10} name="password" value={RegisterNewUser.password} onChange={handleInputChange}></input>
+                    <td className='registration-label'> Password: <input type="text" maxLength={10} name="password" className="form-control"  value={RegisterNewUser.password} onChange={handleInputChange}></input>
                     </td>
                 </tr>
             </tbody>
+            &nbsp;
             <tfoot>
-            <tr> 
-            <td><input type="Button" value="Submit" onClick={handleSubmit}/> </td> 
+            <tr>
+            <td><input type="Button" value="Submit" onClick={handleSubmit} class="btn btn-primary" /> </td> 
             </tr>
             </tfoot>
+            {successMessage && (
+        <div className="alert alert-success mt-3" role="alert">
+          {successMessage} </div>
+          )}
         </table>
         </form>
-        </div>      
+        </div>
     </div>
 );
 

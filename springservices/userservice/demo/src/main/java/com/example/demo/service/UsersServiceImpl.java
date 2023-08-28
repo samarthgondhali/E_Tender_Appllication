@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.example.demo.beans.UserTenderInfo;
 import com.example.demo.beans.Users;
 import com.example.demo.dao.UsersDao;
 
@@ -28,6 +29,26 @@ public class UsersServiceImpl implements UsersService{
 	@Override
 	public Users register(Users users) {
 		return usersDao.save(users);
+	}
+
+	@Override
+	public List<Users> getUserFromUsername(String username) {
+		return usersDao.getUserFromUsername(username);
+	}
+
+	@Override
+	public List<Users> getUserFromEmail(String email) {
+		return usersDao.getUserFromEmail(email);
+	}
+
+	@Override
+	public void updatePasswordForUsername(String username, String password) {
+		usersDao.updatePasswordForUsername(username,password);
+	}
+
+	@Override
+	public void updatePasswordForEmail(String email, String password) {
+		usersDao.updatePasswordForEmail(email,password);
 	}
 	
 }

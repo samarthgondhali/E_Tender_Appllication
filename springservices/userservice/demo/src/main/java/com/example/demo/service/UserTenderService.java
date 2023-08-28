@@ -11,6 +11,7 @@ public interface UserTenderService {
 
 	void deleteTender(int id);
 
+
 //	UserTenderInfo updateTender(String referenceNo, UserTenderInfo users);
 //
 //	UserTenderInfo deleteTender(String referenceNo);

@@ -1,9 +1,24 @@
 import { Link, Outlet } from 'react-router-dom';
 import './App.css'
+//import { useEffect, useState } from 'react';
 
 export default function Navbar(){
-    
-    let user = localStorage.getItem("UserSession")
+
+  //let [nav,setNav] = useState({});
+  let user = localStorage.getItem("UserSession")
+  //  useEffect(()=>{
+  //   user = localStorage.getItem("UserSession")
+  //   if(user!=null){
+  //     setNav(user)
+  //   }
+  //   else{
+  //     setNav(null)
+  //   }
+      
+  //   },[{...user}])
+   
+
+
 
     return(
         <>
@@ -39,6 +54,14 @@ export default function Navbar(){
             <li className="nav-item">
               <Link className="nav-link" to='/ContactUs'>Contact Us</Link>
             </li>
+
+            {/* Copy for testing, comment when done */}
+            {/* <li className="nav-item">
+              <Link className="nav-link" to='/UserDetails'>User Details</Link>
+            </li>
+            <li className="nav-item">
+              <Link className="nav-link" to='/TenderSubmit'>Add Tender</Link>
+            </li> */}
             
           </ul>
           

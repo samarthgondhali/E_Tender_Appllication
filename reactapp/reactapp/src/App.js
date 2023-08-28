@@ -13,8 +13,24 @@ import PrivateRoute from './PrivateRoute/PrivateRoute';
 import TenderSubmit from './TenderSubmit1';
 import LogOut from './LogOut';
 import Image from './tender.jpg'
+import VerifyByOTP from './VerifyByOTP';
+//import { useEffect, useState } from 'react';
 
 function App() {
+
+  // let [nav,setNav] = useState({});
+  // let user = localStorage.getItem("UserSession")
+  //  useEffect(()=>{
+  //   user = localStorage.getItem("UserSession")
+  //   if(user!=null){
+  //     setNav(user)
+  //   }
+  //   else{
+  //     setNav(null)
+  //   }
+      
+  //   },[{...user}])
+
   return (
     <div className="App" style={{ margin:"auto",backgroundImage: 'url(' + Image + ')'}}>
       <header className="App-header">
@@ -27,12 +43,14 @@ function App() {
             <Route path='/Register' element={<Register></Register>}></Route>
             <Route path='/AboutUs' element={<AboutUs></AboutUs>}></Route>
             <Route path='/ContactUs' element={<ContactUs></ContactUs>}></Route>
+            <Route path='/VerifyOTP' element={<VerifyByOTP></VerifyByOTP>}></Route>
             <Route path='/UserDetails' element={
             <PrivateRoute><UserDetails></UserDetails></PrivateRoute>
             }></Route>
             <Route path="/TenderSubmit" element={
               <PrivateRoute><TenderSubmit></TenderSubmit></PrivateRoute>}
             ></Route>
+            
           </Route>
           
         </Routes>

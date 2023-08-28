@@ -51,7 +51,30 @@ public class UsersController {
 	
 	@PostMapping("/addTendersForUser")
 	public ResponseEntity<?> addTendersForUser(@RequestBody UserTenderInfo info){
+		
 		return ResponseEntity.ok(uts.addTenderForUser(info));
+	}
+	
+	@PostMapping("/getUserFromUsername")
+	public ResponseEntity<?> getUserFromUsername(@RequestBody Users info){
+		return ResponseEntity.ok(usersService.getUserFromUsername(info.getUsername()));
+	}
+	
+	@PostMapping("/getUserFromEmail")
+	public ResponseEntity<?> getUserFromEmail(@RequestBody Users info){
+		return ResponseEntity.ok(usersService.getUserFromEmail(info.getEmail()));
+	}
+	
+	@PostMapping("/updatePasswordForUsername")
+	public ResponseEntity<?> updatePasswordForUsername(@RequestBody Users info){
+		usersService.updatePasswordForUsername(info.getUsername(),info.getPassword());
+		return ResponseEntity.ok("ok");
+	}
+	
+	@PostMapping("/updatePasswordForEmail")
+	public ResponseEntity<?> updatePasswordForEmail(@RequestBody Users info){
+		usersService.updatePasswordForEmail(info.getEmail(),info.getPassword());
+		return ResponseEntity.ok("ok");
 	}
 	
 //	@PutMapping("/updateTendersForUser/{referenceNo}")

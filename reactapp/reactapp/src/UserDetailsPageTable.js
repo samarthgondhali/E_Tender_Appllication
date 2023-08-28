@@ -78,7 +78,8 @@ const handleUpdate = (index) => {
   
   useEffect(() => {
     getTenderForUser(tenderData)
-  });
+  },[]);
+
   const getTenderForUser = (obj) => {
     let query = {username:JSON.parse(localStorage.getItem("UserSession"))?.username}
     axios.post("http://localhost:8282/getTendersForUser",query).then(
@@ -86,7 +87,6 @@ const handleUpdate = (index) => {
         obj = [...res.data]
         tenderData = [...obj]
         setData(tenderData)
-        console.log(tenderData)
       }
     );
  }
@@ -95,7 +95,6 @@ const handleUpdate = (index) => {
 
   return (
     <div >
-    {/* <h2 className="user-details-header">Tender Data</h2> */}
     <table>
     <tr>
           <th border="1" width="5%" height="10px"><h1><u className='user-details-header'>Tender's Added</u></h1> </th>
@@ -106,21 +105,22 @@ const handleUpdate = (index) => {
       <thead>
         <tr className="table-header-row" style={{ borderBottom: '1px solid black' }}>
           <th>Tender Name</th>
+          <th>Date Added</th>
           <th>Deadline</th>
-          <th>Name</th>
           <th>Location</th>
           <th>Amount</th>
           {/* <th style={{ border: '1px solid black', padding: '8px' }}> Action</th> */}
         </tr>
       </thead>
       <tbody>
-        {data?.map((tender, index) => (
+        {data.map((tender, index) => (
           <tr className="table-data-row" key={index} style={{ borderBottom: '1px solid black' }}>
-            <td>{tender.tenderName}</td>
-            <td>{tender.endDate}</td>
-            <td>{tender.tenderName}</td>
-            <td>{tender.tenderLocation}</td>
-            <td>{tender.tenderAmount}</td>
+            <td scope='col'>{tender.tenderName}</td>
+            <td scope='col'>{tender.postDate}</td>
+            <td scope='col'>{tender.endDate}</td>
+            <td scope='col'>{tender.tenderLocation}</td>
+            <td scope='col'>{tender.tenderAmount}</td>
+            
             {/* <td className="action-buttons" style={{ border: '1px solid black', padding: '8px' }}>
               <button onClick={() => handleUpdate(index)}>Update</button>
               <button onClick={() => handleDelete(index)}>Delete</button>

@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import axios from "axios";
 import { Navigate, useNavigate } from 'react-router-dom';
 import './LoginPage.css'
+import jwt_decode from "jwt-decode";
 
 export default function LoginPage(){
 
@@ -12,6 +13,40 @@ export default function LoginPage(){
 }
 
 let[LoginDetails,setLoginDetails] = useState(LoginData);
+
+
+
+function handleCallbackResponse(response){
+  var userObj = jwt_decode(response.credential);
+  console.log(userObj);
+  var setObj = {
+    firstname:userObj.given_name,
+    lastname:userObj.family_name,
+    email:userObj.email,
+    dob:"",
+    username:userObj.email,
+    password:"",
+    phonenumber:"",
+  }
+  localStorage.setItem("UserSession",JSON.stringify(setObj));
+  navigate("/UserDetails");
+
+}
+
+useEffect(()=>{
+  /* global google */
+  google.accounts.id.initialize({
+    client_id:"430696131827-ia24b930niudne4ca53mq1qvh26092u2.apps.googleusercontent.com",
+    callback:handleCallbackResponse
+  });
+
+  google.accounts.id.renderButton(
+    document.getElementById("signInDiv"),
+    {theme:"outline",size:"large"}
+  )
+
+  google.accounts.id.prompt();
+},[])
 
 const handleInputChangeForLogin = (e) => {
     const {name, value} = e.target;
@@ -29,50 +64,15 @@ const sendLogin = () => {
   axios.post("http://localhost:8282/login",LoginDetails).then(
     (res)=>{
       localStorage.setItem("UserSession",JSON.stringify(res.data))
-      console.log(res.data)
-      localStorage.getItem("UserSession")
       navigate("/UserDetails")
     }
   );
 }
 
-
-
-//   function loginID(e){
-//       username = e.target.value
-//       console.log(username)
-//   }
-
-//   function pwd(e){
-//       pass = e.target.value
-//       console.log(pass)
-//   }
-
-//   function submitevent(){
-
-//       let flag =false
-//       let arr = [{ uname: "xxx", password: "123" },
-//       { uname: "rrr", password: "13" },
-//       { uname: "xeex", password: "23" },]
-
-//       for(let i of arr){
-//           console.log(username)
-//           if(i.uname == username && i.password == pass){
-//           flag=true
-//           break
-//       }
-//   }
-    //   if(flag){
-    //       setchange("welcome")
-    //   }
-    //   else{
-    //       setchange("Not registered user")
-    //   }
-//   }
-
       return(
         <div >
         <div>
+        
           <form className='login-container'>
             <table >
             <thead>
@@ -112,13 +112,15 @@ const sendLogin = () => {
                 </tr>
                 <div className='button-group'> 
             <tr>
-              <input type='button' class="btn btn-primary" value='Login using Google' className='google-login-button'/>
+              {/* <input type='button' class="btn btn-primary" value='Login using Google' className='google-login-button'/> */}
+              <div id="signInDiv"></div>
             </tr>
             </div>
                 {/* <p id="h2">{change}</p> */}
                 </tbody>
             </table>
             </form>
+            
         </div>
         </div>
     );

@@ -1,7 +1,8 @@
 import React from "react";
-import { useState , useRef } from "react";
+import { useState } from "react";
 import axios from "axios";
-import './TenderSubmit1.css'
+import './TenderSubmit1.css';
+
 
 export default function SubmitTender1(){
 
@@ -18,22 +19,23 @@ export default function SubmitTender1(){
   
     const username = "Hello";
 
-    var referenceNo = useRef(username+Math.floor(Math.random() * 10000000));
+    var referenceNo = username+Math.floor(Math.random() * 10000000);
 
 let initialData = {
     
+    referenceNo,
      address:"",
      tenderName:"",
      tenderDeadline:"",
      tenderType:"Open",
-     tenderCategory:"Media",
+     tenderCategory:"",
      tenderLocation:"",
      tenderAmount:"",
-     paymentMode:"Demand Draft",
+     paymentMode:"",
      invitingAuthorityName:"",
      invitingAuthorityAmount:"",
      postDate,
-     referenceNo,
+     
     };
 
 
@@ -47,12 +49,12 @@ let initialData = {
 
  const handleInputChange = (e) => {
             const { name, value } = e.target;
-            setFormData({ ...FormData, [name]: value, [referenceNo]:referenceNo });
+            setFormData({ ...FormData, [name]: value});
           };
 
     const handleInputChangeBusiness = (e) => {
             const { name, value } = e.target;
-            setBusFormData({ ...BusFormData, [name]: value });
+            setBusFormData({ ...BusFormData, [name]: value});
             // console.log("business: ", BusFormData);
           };
 
@@ -90,6 +92,9 @@ let initialData = {
         //     addUserInfo(newFormData);
         //     console.log(updatedObj);
         // };
+
+        const [successMessage, setSuccessMessage] = useState('');
+
         const handleSubmit = (e) => {
             e.preventDefault();
         
@@ -111,9 +116,10 @@ let initialData = {
             addTender(updatedObj);
             addUserInfo(updatedFormData);
             console.log(updatedObj);
-        }
+            setSuccessMessage('Form submitted successfully!');
+        };
 
-
+        
         const addTender = (obj) => {
             axios.post("http://localhost:7000/addData",obj).then(
               (res)=>{
@@ -121,6 +127,7 @@ let initialData = {
               }
             );
          }
+         
          const addUserInfo = (updatedFormData)=>{
             var obj2 = {
                 username:JSON.parse(localStorage.getItem("UserSession"))?.username,
@@ -138,128 +145,185 @@ let initialData = {
             );
          }
 
-return(
-     <div >
- {/* onSubmit={handleSubmit}  //under the form field */}
-        <form onSubmit={handleSubmit}>
-        <table className="tender-submit-form">
-            <thead>
-                <td>
-                    <h2>
-                        Organisational Details: 
-                    </h2>
-                </td>
-            </thead>
-            <tbody>
-                <tr>
-                <td>
-                Business Name:
-                    <input type="text" maxLength={50} name="businessName" value={BusFormData.businessName} onChange={handleInputChangeBusiness}  className="input-field"/> </td>
-                </tr>
-                <tr>
-                    <td>Business Location: <input type="text" maxLength={10} name="businessLocation" value={BusFormData.businessLocation}  onChange={handleInputChangeBusiness}/> </td>
-                </tr>
-            </tbody>
-            <br></br>
-            <br></br>
-            <thead>
-                <td>
-                    <h2>
-                        Tender Details: 
-                    </h2>
-                </td>
-            </thead>
-            <tbody>
-                <tr>
-                    <td> Tender Name: <input type="text" maxLength={20} name="tenderName" value={FormData.tenderName} onChange={handleInputChange}/> 
-                    </td>
-                </tr>
-                <tr>
-                {/* This part is to be automatically saved without prompting the user to do so */}
-                    {/* <td> Tender PostDate: <input type="text" name="tdate"  onChange={handleInputChange}/>
-                    </td> */}
-                </tr>
-                <tr>
-                    <td> Tender Deadline: <input type="date" name="tenderDeadline" value={FormData.tenderDeadline} onChange={handleInputChange}/>
-                    </td>
-                </tr>
-                <tr>
-                {/* This field needs to be auto-generated using formula which needs to be devised */}
-                    {/* <td> Tender Reference number: <input type="number" name="TenderReferenceNumber"></input>
-                    </td> */}
-                </tr>
-                <tr>
-                    <td>
-                            Tender Type: <select  name="tenderType" value={FormData.tenderType} onChange={handleInputChange}>
-                                    <option value="India" selected>India</option>
-                                    <option value="Global">Global</option>
-                                    </select>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        Tender Category: <select id="Category" name="tenderCategory" value={FormData.tenderCategory} onChange={handleInputChange}>
-                            <option value="Media" selected>Media</option>
-                            <option value="Construction">Construction</option>
-                            <option value="Defence">Defence</option>
-                            <option value="State Electricity">State Electricity</option>
-                            <option value="IT Projects">IT Projects</option>
-                        </select>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        Tender Business Location: <input type="Text" name="TbusinessLocation" maxLength="10" value={FormData.TbusinessLocation} onChange={handleInputChange}/>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        Address: <textarea name="address" maxLength="225" value={FormData.address} onChange={handleInputChange}/>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        Tender Amount: <input type="number" name="tenderAmount" step="0.01" placeholder="0.00" min="0" value={FormData.tenderAmount} onChange={handleInputChange}/>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        Tender Payment: <select id="paymentMode" name="paymentMode" value={FormData.paymentMode} onChange={handleInputChange}>
-                            <option value="Demand Draft" selected>Demand Draft</option>
-                            <option value="Banker's Cheque">Banker's Cheque</option>
-                            <option value="Small Savings Instrument">Small Savings Instrument</option>
-                            </select>
-                    </td>
-                </tr>
-                <tr>
-                {/* This field needs to be verified from Jeremy to make sure this works fine */}
-                    <td>Tender Documents: <input type="file"></input> 
-                    </td>
-                </tr>
-            </tbody>
-                <br></br><br></br>
-            <thead>
-                <h2>
-                    Inviting Authority: 
-                </h2>
-            </thead>
-            <tbody>
-            <tr>
-                <td>
-                    Inviting Authority Name: <input type="text" name="invitingAuthorityName" value={FormData.invitingAuthorityName} onChange={handleInputChange}></input>
-                </td>
-            </tr>
-            <tr>    
-                <td>
-                    Inviting Authority Amount: <input type="number" name="invitingAuthorityAmount" step="0.01" placeholder="0.00" min="0" value={FormData.Amount} onChange={handleInputChange}></input>
-                </td>
-            </tr>
-            </tbody>
-        </table>
-        <input type="submit" value="Submit" onClick={handleSubmit} className="submit-button"></input>
-        {/* <button onClick={logFormData}>Log Form Data</button> */}
-        </form>
-       
+return( 
+<div className="tender-submit-form" style={{paddingTop:"7.5vh"}}>
+  <form className="form" style={{backgroundColor:"rgba(255, 255, 255, 0.9)", margin:"auto"}}>
+    <div className="form-row">
+      <div className="form-group col-md-6">
+        <label for="inputEmail4">Business Name</label>
+        <input
+          type="text"
+          name="businessName"
+          className={`form-control ${BusFormData.businessName ? 'is-valid' : 'is-invalid'}`}
+          value={BusFormData.businessName}
+          onChange={handleInputChangeBusiness}
+          placeholder="Business Name"
+        />
+        <div className="invalid-feedback">Please provide a valid Business Name.</div>
+      </div>
+      
+      <div className="form-group col-md-6">
+        <label for="inputPassword4">Business Location</label>
+        <input
+          type="text"
+          maxLength={10}
+          name="businessLocation"
+          value={BusFormData.businessLocation}
+          onChange={handleInputChangeBusiness}
+          className={`form-control ${BusFormData.businessLocation ? 'is-valid' : 'is-invalid'}`}
+          placeholder="Business Location"
+        />
+        <div className="invalid-feedback">Please provide a valid Business Location.</div>
+      </div>
+    </div>
+    <div className="form-row">
+      <div className="form-group col-md-6">
+        <label for="inputEmail4">Tender Name</label>
+        <input
+          type="text"
+          name="tenderName" value={FormData.tenderName} onChange={handleInputChange}
+          className={`form-control ${FormData.tenderName ? 'is-valid' : 'is-invalid'}`}
+          placeholder="Tender Name"
+        />
+        <div className="invalid-feedback">Please provide a valid Tender Name.</div>
+      </div>
+      <div className="form-group col-md-6">
+        <label for="inputPassword4">Tender Location</label>
+        <input
+          type="text"
+          maxLength={10}
+          name="tenderLocation" value={FormData.tenderLocation} onChange={handleInputChange}
+          className={`form-control ${FormData.tenderLocation ? 'is-valid' : 'is-invalid'}`}
+          placeholder="Tender Location"
+        />
+        <div className="invalid-feedback">Please provide a valid Location.</div>
+      </div>
+    </div>
+    {/* <div className="form-group">
+      <label for="inputAddress">Tender Name</label>
+      <input
+        type="text"
+        maxLength={20}
+        name="tenderName"
+        value={FormData.tenderName}
+        onChange={handleInputChange}
+        className="form-control"
+        placeholder="Tender Name"
+      />
+    </div> */}
+    <div className="form-row">
+      <div className="form-group col-md-6">
+        <label htmlFor="inputAddress2">Tender Deadline</label>
+        <input
+          type="date"
+          name="tenderDeadline"
+          value={FormData.tenderDeadline}
+          onChange={handleInputChange}
+          className={`form-control ${FormData.tenderDeadline ? 'is-valid' : 'is-invalid'}`}
+        />
+        <div className="invalid-feedback">Please provide a Deadline Date.</div>
+      </div>
+      <div className="form-group col-md-3">
+        <label htmlFor="inputState">Tender Category</label>
+        <select
+          id="inputState"
+          name="tenderCategory"
+          value={FormData.tenderCategory}
+          onChange={handleInputChange}
+          className={`form-control ${FormData.tenderCategory ? 'is-valid' : 'is-invalid'}`}
+        >
+          <option value="">-----</option>
+          <option value="Media">Media</option>
+          <option value="Construction">Construction</option>
+          <option value="Defence">Defence</option>
+          <option value="State Electricity">State Electricity</option>
+          <option value="IT Projects">IT Projects</option>
+        </select>
+        <div className="invalid-feedback">Please select a Tender Category.</div>
+      </div>
+      <div className="form-group col-md-3">
+        <label htmlFor="inputZip">Tender Amount</label>
+        <input
+          type="number"
+          name="tenderAmount"
+          step="0.01"
+          placeholder="0.00"
+          min="0"
+          value={FormData.tenderAmount}
+          onChange={handleInputChange}
+          className={`form-control ${FormData.tenderAmount ? 'is-valid' : 'is-invalid'}`}
+        />
+        <div className="invalid-feedback">Please Provide the Tender Amount.</div>
+      </div>
+      <div className="form-group col-md-3">
+        <label htmlFor="inputState">Tender Payment</label>
+        <select
+          id="inputState"
+          name="paymentMode" value={FormData.paymentMode} onChange={handleInputChange}
+          className={`form-control ${FormData.paymentMode ? 'is-valid' : 'is-invalid'}`}
+        >
+          <option value="">-----</option>
+          <option value="Demand Draft">Demand Draft</option>
+        <option value="Banker's Cheque">Banker's Cheque</option>
+        <option value="Small Savings Instrument">Small Savings Instrument</option>
+      </select>
+      <div className="invalid-feedback">Please select a valid Tender Category.</div>
+      </div>
+    </div>
+    <div className="form-row">
+      <div className="form-group col-md-6">
+        <label for="inputEmail4">Inviting Authority Name</label>
+        <input
+          type="text"
+          name="invitingAuthorityName"
+          className="form-control"
+        //   className={`form-control ${FormData.invitingAuthorityName ? 'is-valid' : 'is-invalid'}`}
+          value={FormData.invitingAuthorityName} onChange={handleInputChange}
+          placeholder="Inviting Authority Name"
+        />
+        <div className="invalid-feedback">Please Enter a valid Authority Name.</div>
+      </div>
+      <div className="form-group col-md-6">
+        <label for="inputPassword4">Inviting Authority Amount</label>
+        <input
+          name="invitingAuthorityAmount"
+          type="number"
+          maxLength={10}
+          step="0.01" placeholder="0.00" min="0" value={FormData.invitingAuthorityAmount} onChange={handleInputChange}
+          className="form-control"
+        //   className={`form-control ${FormData.invitingAuthorityAmount ? 'is-valid' : 'is-invalid'}`}
+        />
+        <div className="invalid-feedback">Please Enter a valid Amount.</div>
+      </div>
+    </div>
+    <div className="form-group">
+      <label for="inputZip">Address</label>
+      <textarea
+        name="address"
+        maxLength="225"
+        value={FormData.address}
+        onChange={handleInputChange}
+        className="form-control"
+        placeholder="Address"
+      />
+    </div>
+    <div className="form-group">
+      <input className="form-check-input" type="checkbox" id="gridCheck" required />
+      <label className="form-check-label" htmlFor="gridCheck">
+        Agree to Terms & Conditions
+      </label>
+      <div className="invalid-feedback">You must agree to the Terms & Conditions to submit the form.</div>
+    </div>
+    <button type="submit" class="btn btn-primary" onClick={handleSubmit} >
+      Submit
+    </button>
+    {successMessage && (
+        <div className="alert alert-success mt-3" role="alert">
+          {successMessage}
         </div>
-    );
-}
+      )}
+  </form>
+</div>
+
+ 
+);}

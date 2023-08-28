@@ -76,6 +76,12 @@ public class UserTenderInfo {
 	public void setTenderAmount(long tenderAmount) {
 		this.tenderAmount = tenderAmount;
 	}
+	@Override
+	public String toString() {
+		return "UserTenderInfo [id=" + id + ", username=" + username + ", referenceNo=" + referenceNo + ", tenderName="
+				+ tenderName + ", tenderLocation=" + tenderLocation + ", postDate=" + postDate + ", endDate=" + endDate
+				+ ", tenderAmount=" + tenderAmount + ", user=" + user + "]";
+	}
 	
 	
 }

@@ -297,7 +297,7 @@ export default function SearchBar() {
                   {/* Add advanced search fields here */}
                   {/* <input type='text'  placeholder='Category' onBlur={setCategory} name='tenderCategory'/> &nbsp; */}
                   Tender Category:<select id="Category" name="tenderCategory" onClick={setCategory}>
-                    <option value="Media">Media</option>
+                    {/* <option value="Media">Media</option> */}
                     <option value="Construction">Construction</option>
                     <option value="Defence">Defence</option>
                     <option value="State Electricity">State Electricity</option>
