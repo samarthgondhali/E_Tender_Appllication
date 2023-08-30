@@ -50,8 +50,8 @@ public class UsersController {
 	}
 	
 	@PostMapping("/addTendersForUser")
-	public ResponseEntity<?> addTendersForUser(@RequestBody UserTenderInfo info){
-		
+	public ResponseEntity<UserTenderInfo> addTendersForUser(@RequestBody UserTenderInfo info){
+		System.out.println(info);
 		return ResponseEntity.ok(uts.addTenderForUser(info));
 	}
 	
@@ -82,9 +82,9 @@ public class UsersController {
 //		return ResponseEntity.ok(uts.updateTender(referenceNo,users));
 //	}
 //	
-	@DeleteMapping("/deleteTendersForUser/{id}")
-	public ResponseEntity<?> deleteTendersForUser(@RequestParam int id){
-		uts.deleteTender(id);
-		return ResponseEntity.ok(id);
+	@DeleteMapping("/deleteTendersForUser")
+	public ResponseEntity<String> deleteTendersForUser(@RequestParam String referenceno){
+		uts.deleteTenderInfo(referenceno);
+		return ResponseEntity.ok(referenceno);
 	}
 }

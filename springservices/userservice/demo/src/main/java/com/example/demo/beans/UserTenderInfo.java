@@ -1,10 +1,13 @@
 package com.example.demo.beans;
 
+import java.sql.Date;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 
 @Entity
 public class UserTenderInfo {
@@ -13,11 +16,11 @@ public class UserTenderInfo {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
 	private String username;
-	private String referenceNo;
+	private String referenceno;
 	private String tenderName;
 	private String tenderLocation;
-	private String postDate;
-	private String endDate;
+	private Date postDate;
+	private Date endDate;
 	private long tenderAmount;
 	@ManyToOne
 	private Users user;
@@ -41,10 +44,10 @@ public class UserTenderInfo {
 		this.username = username;
 	}
 	public String getReferenceno() {
-		return referenceNo;
+		return referenceno;
 	}
 	public void setReferenceno(String referenceno) {
-		this.referenceNo = referenceno;
+		this.referenceno = referenceno;
 	}
 	public String getTenderName() {
 		return tenderName;
@@ -58,16 +61,16 @@ public class UserTenderInfo {
 	public void setTenderLocation(String tenderLocation) {
 		this.tenderLocation = tenderLocation;
 	}
-	public String getPostDate() {
+	public Date getPostDate() {
 		return postDate;
 	}
-	public void setPostDate(String postDate) {
+	public void setPostDate(Date postDate) {
 		this.postDate = postDate;
 	}
-	public String getEndDate() {
+	public Date getEndDate() {
 		return endDate;
 	}
-	public void setEndDate(String endDate) {
+	public void setEndDate(Date endDate) {
 		this.endDate = endDate;
 	}
 	public long getTenderAmount() {
@@ -78,7 +81,7 @@ public class UserTenderInfo {
 	}
 	@Override
 	public String toString() {
-		return "UserTenderInfo [id=" + id + ", username=" + username + ", referenceNo=" + referenceNo + ", tenderName="
+		return "UserTenderInfo [id=" + id + ", username=" + username + ", referenceNo=" + referenceno + ", tenderName="
 				+ tenderName + ", tenderLocation=" + tenderLocation + ", postDate=" + postDate + ", endDate=" + endDate
 				+ ", tenderAmount=" + tenderAmount + ", user=" + user + "]";
 	}

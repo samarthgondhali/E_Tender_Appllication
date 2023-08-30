@@ -9,7 +9,7 @@ public interface UserTenderService {
 
 	UserTenderInfo addTenderForUser(UserTenderInfo info);
 
-	void deleteTender(int id);
+	void deleteTenderInfo(String referenceno);
 
 
 //	UserTenderInfo updateTender(String referenceNo, UserTenderInfo users);
