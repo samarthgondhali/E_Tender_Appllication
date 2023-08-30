@@ -28,13 +28,13 @@ app.post("/addData",(req,res)=>{
     res.send("added sucessfully")
 })
 
-app.put("/updateData",(req,res)=>{
+app.post("/updateData",(req,res)=>{
     var temp = req.body;
     mongoupdate(temp.filter,temp.data);
     res.send("updated sucessfully")
 })
 
-app.delete("/deleteData",(req,res)=>{
+app.post("/deleteData",(req,res)=>{
     var temp = req.body;
     mongodelete(temp);
     res.send("deleted sucessfully")

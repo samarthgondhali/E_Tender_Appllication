@@ -1,21 +1,22 @@
-import { Link, Outlet } from 'react-router-dom';
+import { Link, Outlet,useNavigate } from 'react-router-dom';
+import { useState,useEffect } from 'react';
 import './App.css'
-//import { useEffect, useState } from 'react';
+
 
 export default function Navbar(){
 
-  //let [nav,setNav] = useState({});
-  let user = localStorage.getItem("UserSession")
-  //  useEffect(()=>{
-  //   user = localStorage.getItem("UserSession")
-  //   if(user!=null){
-  //     setNav(user)
-  //   }
-  //   else{
-  //     setNav(null)
-  //   }
-      
-  //   },[{...user}])
+  const [user, setUser] = useState(localStorage.getItem("UserSession"));
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    // Whenever the "UserSession" value changes in localStorage,
+    // update the "user" state accordingly
+    const storedUser = localStorage.getItem("UserSession");
+    setUser(storedUser);
+
+    // Use navigate to re-render the Navbar
+    navigate(); // This will trigger a re-render of the Navbar
+  }, [navigate]);
    
 
 
@@ -30,9 +31,16 @@ export default function Navbar(){
 
         <div className="collapse navbar-collapse" id="navbarSupportedContent">
           <ul className="navbar-nav mr-auto">
+            {/* <li className="nav-item">
+              <Link className="nav-link" to='/Search'>Search</Link>
+            </li> */}
+            {user==null ? 
             <li className="nav-item">
               <Link className="nav-link" to='/Search'>Search</Link>
-            </li>
+            </li> : 
+            <li className="nav-item">
+              <Link className="nav-link" to='/SearchBid'>Search</Link>
+            </li>}
             {user==null ? <li className="nav-item">
               <Link className="nav-link" to='/Login'>Login</Link>
             </li> : <></>}
@@ -48,20 +56,12 @@ export default function Navbar(){
             {user!=null ? <li className="nav-item">
               <Link className="nav-link" to='/TenderSubmit'>Add Tender</Link>
             </li>:<></>}
+            {user!=null ? <li className="nav-item">
+              <Link className="nav-link" to='/BidByUser'>Show Bids</Link>
+            </li>:<></>}
             <li className="nav-item">
               <Link className="nav-link" to='/AboutUs'>About Us</Link>
             </li>
-            <li className="nav-item">
-              <Link className="nav-link" to='/ContactUs'>Contact Us</Link>
-            </li>
-
-            {/* Copy for testing, comment when done */}
-            {/* <li className="nav-item">
-              <Link className="nav-link" to='/UserDetails'>User Details</Link>
-            </li>
-            <li className="nav-item">
-              <Link className="nav-link" to='/TenderSubmit'>Add Tender</Link>
-            </li> */}
             
           </ul>
           

@@ -8,12 +8,13 @@
 //import 'react-phone-input-2/lib/style.css';
 
 import axios from "axios";
-import React,{useState} from "react";
+import React,{useEffect, useState} from "react";
 import { Navigate, useNavigate } from 'react-router-dom';
 import PhoneInput from "react-phone-input-2";
 import 'react-phone-input-2/lib/style.css';
 import './PhoneNumberInput.css';
 import './RegistrationForm.css';
+
 
 export default function Register(){
 
@@ -31,24 +32,36 @@ let RegisterUser = {
 
 let [RegisterNewUser, setRegisterNewUser] = useState(RegisterUser);
 let [successMessage, setSuccessMessage] = useState('');
+let [isFormValid, setIsFormValid] = useState(false);
+const [isDobValid, setIsDobValid] = useState(true);
 
 const handleInputChange = (e, name, value) => {
     if (e && e.target) {
         ({ name, value } = e.target);
+    }
+    if(name==='dob'){
+        const selectedDate= new Date(value);
+        const currentDate = new Date();
+        setIsDobValid(selectedDate <= currentDate);
     }
     setRegisterNewUser({ ...RegisterNewUser, [name]: value });
 };
 
 const handleSubmit = (e) => {
     e.preventDefault();
-    sendVerificationEmail();
+    if (isFormValid) {
     sendRegister();
-    navigate("/VerifyOTP")
-    
-    
     console.log(RegisterNewUser);
     setSuccessMessage('Form submitted successfully!');
+} else {
+    setSuccessMessage('Please fill in all required fields.');
+  }
 };
+
+useEffect(() => {
+    const isValid = Object.values(RegisterNewUser).every((value) => value !== '' && isDobValid );
+    setIsFormValid(isValid);
+}, [RegisterNewUser]);
 
 const sendRegister = () => {
     axios.post("http://localhost:8282/register",RegisterNewUser).then(
@@ -127,14 +140,14 @@ return (
                     </td>
                 </tr>
                 <tr>
-                    <td className='registration-label'> Password: <input type="text" maxLength={10} name="password" className="form-control"  value={RegisterNewUser.password} onChange={handleInputChange}></input>
+                    <td className='registration-label'> Password: <input type="password" maxLength={10} name="password" className="form-control"  value={RegisterNewUser.password} onChange={handleInputChange}></input>
                     </td>
                 </tr>
             </tbody>
             &nbsp;
             <tfoot>
             <tr>
-            <td><input type="Button" value="Submit" onClick={handleSubmit} class="btn btn-primary" /> </td> 
+            <td><input type="Button" value="Submit" onClick={handleSubmit} class="btn btn-primary" disabled={!isFormValid}/> </td> 
             </tr>
             </tfoot>
             {successMessage && (

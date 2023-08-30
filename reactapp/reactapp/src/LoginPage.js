@@ -63,8 +63,11 @@ const handleSubmit = (e) => {
 const sendLogin = () => {
   axios.post("http://localhost:8282/login",LoginDetails).then(
     (res)=>{
-      localStorage.setItem("UserSession",JSON.stringify(res.data))
-      navigate("/UserDetails")
+      if(res.data.username!=null){
+        localStorage.setItem("UserSession",JSON.stringify(res.data))
+        
+        navigate("/UserDetails")
+      }
     }
   );
 }
@@ -83,7 +86,7 @@ const sendLogin = () => {
             <tbody>
             <tr>
               <td>
-              <label htmlFor='username' className='login-label'>Username/Email: </label>
+              <label htmlFor='username' className='login-label'>Username: </label>
                <input type="text" name="username" value={LoginDetails.username} onChange={handleInputChangeForLogin} className='Login-User'></input>
               </td>
             </tr>
@@ -98,19 +101,19 @@ const sendLogin = () => {
             {/* onClick={submitevent} in the below button */}
             <div className='button-group'>
                 <input type="button" class="btn btn-primary" id="h1" value="Login" onClick={handleSubmit} className='login-button'/> &nbsp;
-                <input type="button" class="btn btn-primary" value="Forgot Password"  className='forgot-password-button'/> 
+                {/* <input type="button" class="btn btn-primary" value="Forgot Password"  className='forgot-password-button'/>  */}
                 
                 </div>
                 </td>
                 </tr>
                 <tr>
                 <td>
-                <div className='button-group'>
+                {/* <div className='button-group'>
                 <input type="button" class="btn btn-primary" value="Sign Up" ></input>
-                </div>
+                </div> */}
                 </td>
                 </tr>
-                <div className='button-group'> 
+                <div className='button-group'>  
             <tr>
               {/* <input type='button' class="btn btn-primary" value='Login using Google' className='google-login-button'/> */}
               <div id="signInDiv"></div>
