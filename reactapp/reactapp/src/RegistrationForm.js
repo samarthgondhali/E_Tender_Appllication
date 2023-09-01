@@ -9,7 +9,7 @@
 
 import axios from "axios";
 import React,{useEffect, useState} from "react";
-import { Navigate, useNavigate } from 'react-router-dom';
+import { Navigate, NavigationType, useNavigate } from 'react-router-dom';
 import PhoneInput from "react-phone-input-2";
 import 'react-phone-input-2/lib/style.css';
 import './PhoneNumberInput.css';
@@ -65,7 +65,10 @@ useEffect(() => {
 
 const sendRegister = () => {
     axios.post("http://localhost:8282/register",RegisterNewUser).then(
-      (res)=>{console.log("Register sucessful",res.data)}
+      (res)=>{
+        sendVerificationEmail();
+        console.log("Register sucessful",res.data)
+    }
     );
   }
 
@@ -90,6 +93,8 @@ const sendVerificationEmail = () => {
     axios.post("http://localhost:7000/mailService",mailContent).then(
         (res)=>{console.log("Verification mail sent")}
     )
+
+    navigate("/VerifyOTP");
 }
 
 

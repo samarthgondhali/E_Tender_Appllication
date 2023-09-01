@@ -34,13 +34,9 @@ export default function Navbar(){
             {/* <li className="nav-item">
               <Link className="nav-link" to='/Search'>Search</Link>
             </li> */}
-            {user==null ? 
             <li className="nav-item">
-              <Link className="nav-link" to='/Search'>Search</Link>
-            </li> : 
-            <li className="nav-item">
-              <Link className="nav-link" to='/SearchBid'>Search</Link>
-            </li>}
+              <Link className="nav-link" to='/AboutUs'>About Us</Link>
+            </li>
             {user==null ? <li className="nav-item">
               <Link className="nav-link" to='/Login'>Login</Link>
             </li> : <></>}
@@ -59,12 +55,20 @@ export default function Navbar(){
             {user!=null ? <li className="nav-item">
               <Link className="nav-link" to='/BidByUser'>Show Bids</Link>
             </li>:<></>}
+            {user==null ? 
             <li className="nav-item">
-              <Link className="nav-link" to='/AboutUs'>About Us</Link>
-            </li>
-            
+              <Link className="nav-link" to='/Search'>Search</Link>
+            </li> : 
+            <li className="nav-item">
+              <Link className="nav-link" to='/SearchBid'>Search</Link>
+            </li>}
           </ul>
-          
+          <ul>
+            <li>
+            {user!=null ? <div>{user?.username}</div> : <div></div>}
+            </li>
+          </ul>
+            
         </div>
       </nav>
       <Outlet></Outlet>
